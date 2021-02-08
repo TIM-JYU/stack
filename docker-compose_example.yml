@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+  maxima:
+    image: mathinstitut/goemaxima:2020070100-latest
+  stack:
+    build:
+      context: .
+      target: prod
+    depends_on: 
+      - maxima
+    volumes:
+      - ./plots:/var/data/api/stack/plots:rw
+      - ./plots:/var/www/html/plots:rw
+      - ./api/config.php.docker:/var/www/html/config.php:rw
+      - ./entrypoint_install_and_run_debug.sh:/var/www/html/entrypoint_install_and_run.sh
