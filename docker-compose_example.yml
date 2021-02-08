@@ -6,8 +6,10 @@ services:
     build:
       context: .
       target: prod
-    depends_on: 
+    depends_on:
       - maxima
+    ports:
+      - "49992:80"
     volumes:
       - ./plots:/var/data/api/stack/plots:rw
       - ./plots:/var/www/html/plots:rw
