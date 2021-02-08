@@ -42,6 +42,12 @@ $CFG->maximalibraries = '';
 $CFG->serveruserpass = '';
 //$CFG->
 
+// Do not change this from zero.  The API has no parser cache.
+$CFG->parsercacheinputlength = 0;
+
+// Tells the code you are not using this as part of Moodle.
+$CFG->useaspartof = 'api';
+
 $CFG->plotcommand = "gnuplot";
 $CFG->ajaxvalidation = 0;
 $CFG->replacedollars = false;
