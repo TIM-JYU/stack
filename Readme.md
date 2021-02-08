@@ -43,6 +43,8 @@ services:
       target: prod
     depends_on: 
       - maxima
+    ports:
+      - "49992:80"
     volumes:
       - ./plots:/var/data/api/stack/plots:rw
       - ./plots:/var/www/html/plots:rw
@@ -50,7 +52,11 @@ services:
       - ./entrypoint_install_and_run.sh:/var/www/html/entrypoint_install_and_run.sh
 ```
 
-Note that h
+This will
+
+* Start MaximaPool server (accessible via `http://maxima:8080/maxima/` endpoint)
+* Build and start Stack API server in production mode on port 80 and makes it accessible via `localhost:49992`
+
 
 ### Run development API server and Maxima
 
@@ -70,6 +76,8 @@ services:
     build:
       context: .
       target: prod
+    ports:
+      - "49992:80"
     depends_on: 
       - maxima
     volumes:
