@@ -1,4 +1,6 @@
-# STACK 4.3.7 [![Build Status](https://api.travis-ci.org/maths/moodle-qtype_stack.svg?branch=master)](https://travis-ci.org/github/maths/moodle-qtype_stack/)
+# STACK 4.3.7
+
+This is a fork of [maths/moodle-qtype_stack](https://github.com/maths/moodle-qtype_stack) system with support for Dockerized API server.
 
 STACK is an assessment system for mathematics, science and related disciplines.  STACK is a question type for the Moodle learning management system, and also the ILIAS learning management system.
 
@@ -6,13 +8,89 @@ STACK was created by [Chris Sangwin](http://www.maths.ed.ac.uk/~csangwin/) of th
 
 STACK is based on continuing research and use at the University of Edinburgh, the Open University, Aalto, Loughborough University, the University of Birmingham and others.
 
-## Current state of development
+## Docker usage
 
-STACK 4.3 contains some important re-engineering of core components.  This will enable significant new features in future releases.  STACK 4.3.7 mostly contains minor bug fixes.
+This is a fork tailored to run Stack API server as a Docker container in [TIM](https://gitlab.com/tim-jyu/tim) stack.
 
-Please continue to report any bugs you find at https://github.com/maths/moodle-qtype_stack/issues.
+Please note the following when trying to use or setup your own container
 
-The [current state of development](https://github.com/maths/moodle-qtype_stack/blob/master/doc/en/Developer/Development_track.md) is explained more fully in the [developer documentation](https://github.com/maths/moodle-qtype_stack/blob/master/doc/en/Developer/index.md).
+### Build targets
+
+Currently `Dockerfile` contains two targets:
+
+* `prod`: Sets up PHP 7.4, `gnuplot` and `stack` server. Runs `entrypoint_install_and_run.sh` as its entrypoint.
+* `dev`: Same as `prod` but in addition starts `sshd`. Runs `entrypoint_install_and_run.sh` as its entrypoint (see `docker-compose` section below for more info).
+
+### Configuration and Maxima
+
+Use `api/config.php.docker` file to edit Stack API config. It currently contains options relevant to TIM.
+
+Currently the fork is pre-configured to run MaximaPool API using [goemaxima server](https://github.com/mathinstitut/goemaxima).
+As such, there is no local Maxima installation that you can access within the container.
+
+## Usage examples with `docker-compose`
+
+### Run production API server and Maxima
+
+```yaml
+version: "3.7"
+services:
+  maxima:
+    image: mathinstitut/goemaxima:2020070100-latest
+  stack:
+    build:
+      context: .
+      target: prod
+    depends_on: 
+      - maxima
+    volumes:
+      - ./plots:/var/data/api/stack/plots:rw
+      - ./plots:/var/www/html/plots:rw
+      - ./api/config.php.docker:/var/www/html/config.php:rw
+      - ./entrypoint_install_and_run.sh:/var/www/html/entrypoint_install_and_run.sh
+```
+
+Note that h
+
+### Run development API server and Maxima
+
+To run a development server, you can mount `entrypoint_install_and_run_debug.sh` to `entrypoint_install_and_run.sh`.  
+This will start an sshd server with the following options
+
+* Username: `root`
+* Password: `test`
+* Port: `22`
+
+```yaml
+version: "3.7"
+services:
+  maxima:
+    image: mathinstitut/goemaxima:2020070100-latest
+  stack:
+    build:
+      context: .
+      target: prod
+    depends_on: 
+      - maxima
+    volumes:
+      - ./plots:/var/data/api/stack/plots:rw
+      - ./plots:/var/www/html/plots:rw
+      - ./api/config.php.docker:/var/www/html/config.php:rw
+      - ./entrypoint_install_and_run_debug.sh:/var/www/html/entrypoint_install_and_run.sh
+```
+
+## Syncing changes with upstream
+
+From time to time, this fork needs to be synced with [upstream](https://github.com/maths/moodle-qtype_stack).  
+At this moment `api4.3` is the fork on upstream that contains up-to-date API.
+
+To pull changes from upstream to this fork, you can [merge changes from upstream](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/merging-an-upstream-repository-into-your-fork):
+
+```bash 
+git pull https://github.com/maths/moodle-qtype_stack api4.3
+```
+
+This may require resolving merge conflicts.
 
 ## Documentation
 
