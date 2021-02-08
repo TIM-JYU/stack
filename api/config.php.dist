@@ -14,6 +14,9 @@ $CFG->dirroot = realpath(dirname(__FILE__));
 // You must have a data directory into which the webserver can write.  Don't put this in your web directory.
 $CFG->dataroot = "/var/data/api";
 
+// Disable displaying errors in production
+$CFG->displayerrors = 0;
+
 // URL of your web server, e.g.
 $CFG->dataurl = "http://localhost/api/";
 

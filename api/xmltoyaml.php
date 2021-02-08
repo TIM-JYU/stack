@@ -18,7 +18,7 @@ require_once(__DIR__ . '/../config.php');
 
 $then = microtime(true);
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', $CFG->displayerrors);
 
 require_once(__DIR__ . '/libs/export.php');
 require_once(__DIR__ . '/libs/yaml_defaults.php');

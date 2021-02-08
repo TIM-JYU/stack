@@ -16,6 +16,9 @@ $CFG->dirroot = realpath(dirname(__FILE__));
 $CFG->dataroot = "/var/data/api";
 //$CFG->platform = 'linux-optimised';
 
+// Disable displaying errors in production
+$CFG->displayerrors = 0;
+
 // URL of your web server, e.g.
 $CFG->dataurl = "http://localhost/api/";
 $host = getenv('BROWSER_URL', true);
