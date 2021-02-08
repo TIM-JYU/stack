@@ -12,4 +12,4 @@ services:
       - ./plots:/var/data/api/stack/plots:rw
       - ./plots:/var/www/html/plots:rw
       - ./api/config.php.docker:/var/www/html/config.php:rw
-      - ./entrypoint_install_and_run_debug.sh:/var/www/html/entrypoint_install_and_run.sh
+      - ./entrypoint_install_and_run.sh:/var/www/html/entrypoint_install_and_run.sh

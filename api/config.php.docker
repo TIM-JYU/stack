@@ -24,8 +24,6 @@ $CFG->jsxparentselector = ".csRunDiv";
 
 $CFG->maximacommand = '';
 $CFG->maximaversion = 'default';
-// Once you have compiled maxima you will need to change this.
-//$CFG->platform            = 'linux';
 $CFG->platform            = 'server';
 $CFG->maximacommandopt    = ''; 
 $CFG->maximacommandserver = 'http://maxima:8080/maxima/';
