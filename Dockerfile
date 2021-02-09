@@ -6,9 +6,13 @@ RUN chmod a+rw /var/data/api
 RUN mkdir -p /var/data/api/stack/logs && mkdir mkdir -p /var/data/api/stack/tmp
 
 # Note: Maxima is not installed locally. Instead, Maxima is provided by a separate service
-RUN apt-get update && apt-get install gnuplot libyaml-dev unzip git -y
+RUN apt-get update && apt-get install gnuplot libyaml-dev zip unzip libzip-dev git -y
 
 RUN pecl install yaml
+# zip support must be enabled manually
+# https://stackoverflow.com/a/48700777
+# Note: --with-libzip is not a valid option now
+RUN docker-php-ext-configure zip && docker-php-ext-install zip
 RUN echo "extension=yaml.so" > /usr/local/etc/php/conf.d/yaml.ini
 VOLUME ["/var/data/api/stack/plots"]
 RUN ln -s /var/data/api/stack/plots /var/www/html/plots
