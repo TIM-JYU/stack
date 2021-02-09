@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   maxima:
-    image: mathinstitut/goemaxima:2020070100-latest
+    image: dezhidki/goemaxima:2020113000-dev
   stack:
     build:
       context: .
@@ -11,7 +11,6 @@ services:
     ports:
       - "49992:80"
       - "2222:22"
-      - "9003:9003"
     volumes:
       - ./plots:/var/data/api/stack/plots:rw
       - ./plots:/var/www/html/plots:rw
