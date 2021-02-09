@@ -46,8 +46,9 @@ abstract class stack_maths_output_filter_base extends stack_maths_output {
 
     public function process_lang_string($string) {
         $string = $this->find_and_render_equations($string);
-        $string = str_replace('!ploturl!',
-                moodle_url::make_file_url('/question/type/stack/plot.php', '/'), $string);
+        // TODO: Figure out how to handle ploturl
+        /*$string = str_replace('!ploturl!',
+                moodle_url::make_file_url('/question/type/stack/plot.php', '/'), $string);*/
         return $string;
     }
 
