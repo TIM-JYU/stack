@@ -36,7 +36,7 @@ As such, there is no local Maxima installation that you can access within the co
 version: "3.7"
 services:
   maxima:
-    image: mathinstitut/goemaxima:2020070100-latest
+    image: timimages/goemaxima:2020113000-latest
   stack:
     build:
       context: .
@@ -71,7 +71,7 @@ This will start an sshd server with the following options
 version: "3.7"
 services:
   maxima:
-    image: mathinstitut/goemaxima:2020070100-latest
+    image: timimages/goemaxima:2020113000-latest
   stack:
     build:
       context: .
