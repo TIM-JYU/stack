@@ -1,6 +1,6 @@
 #!/bin/bash
 # Builds image of Stack
-# ARG1: Build target (prod or dev)
+# ARG1: Build target (prod or dev).
 # ARG2: Registry name to push image to.
 # ARG3: Version tag to use. Use `build` if you don't want it tagged as latest.
 
