@@ -8,6 +8,9 @@ variables:
   stage: build
   services:
     - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2376
+    DOCKER_TLS_CERTDIR: "/certs"
   before_script:
     - docker info
     - echo "$DH_TOKEN" | docker login --username $DH_USER --password-stdin
