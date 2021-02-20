@@ -14,6 +14,17 @@ This is a fork tailored to run Stack API server as a Docker container in [TIM](h
 
 Please note the following when trying to use or setup your own container
 
+### Building images
+
+To build an image, you can use normal `docker build`. You can also use the included `buildimage.sh` script as follows:
+
+```
+$ ./buildimage.sh prod
+```
+
+This will build the production image and tag it as `stack-api:build`.
+You can also use `dev` target to build development image. Check out the differences between the two targets in the next section.
+
 ### Build targets
 
 Currently `Dockerfile` contains two targets:
