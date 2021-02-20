@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Builds image of Stack
 # ARG1: Build target (prod or dev).
 # ARG2: Registry name to push image to.
