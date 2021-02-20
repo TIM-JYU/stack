@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   maxima:
-    image: dezhidki/goemaxima:2020113000-dev
+    image: timimages/goemaxima:2020113000-latest
   stack:
     build:
       context: .
