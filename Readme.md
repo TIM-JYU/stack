@@ -41,6 +41,9 @@ As such, there is no local Maxima installation that you can access within the co
 
 ## Usage examples with `docker-compose`
 
+These examples assume you built the images yourself with `buildimage.sh` script.  
+You can also use automatically built images from [timimages/stack-api](https://hub.docker.com/r/timimages/stack-api) repository instead of building them yourself.
+
 ### Run production API server and Maxima
 
 ```yaml
@@ -49,10 +52,8 @@ services:
   maxima:
     image: timimages/goemaxima:2020113000-latest
   stack:
-    build:
-      context: .
-      target: prod
-    depends_on: 
+    image: stack-api:build
+    depends_on:
       - maxima
     ports:
       - "49992:80"
@@ -84,11 +85,10 @@ services:
   maxima:
     image: timimages/goemaxima:2020113000-latest
   stack:
-    build:
-      context: .
-      target: prod
+    image: stack-api:build-dev
     ports:
       - "49992:80"
+      - "2020:22"
     depends_on: 
       - maxima
     volumes:
