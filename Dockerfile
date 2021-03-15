@@ -15,11 +15,11 @@ RUN pecl install yaml
 # Note: --with-libzip is not a valid option now
 RUN docker-php-ext-configure zip && docker-php-ext-install zip
 RUN echo "extension=yaml.so" > /usr/local/etc/php/conf.d/yaml.ini
-VOLUME ["/var/data/api/stack/plots"]
+RUN mkdir -p /var/data/api/stack/plots
 RUN ln -s /var/data/api/stack/plots /var/www/html/plots
 COPY ./ /var/www/html
 COPY ./api/config.php.docker /var/www/html/config.php
-RUN chmod a+rwx /var/data/api/stack /var/data/api/stack/logs /var/data/api/stack/tmp /var/data/api/stack/plots
+RUN chmod ugo+rwx /var/data/api/stack /var/data/api/stack/logs /var/data/api/stack/tmp /var/data/api/stack/plots
 
 ENTRYPOINT  /var/www/html/entrypoint_install_and_run.sh
 
