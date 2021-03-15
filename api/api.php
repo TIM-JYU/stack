@@ -104,7 +104,7 @@ class qtype_stack_api {
             $tavalue = $question->get_ta_for_input($name);
 
             $fieldname = $fieldprefix.$name;
-            $state = $question->get_input_state($name, $response);
+            $state = $question->get_input_state($name, $attempt);
 
             $questiontext = str_replace("[[input:{$name}]]",
             $input->render($state, $fieldname, $options->readonly, $tavalue),
