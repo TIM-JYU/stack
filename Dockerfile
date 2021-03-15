@@ -1,6 +1,7 @@
 # Note: Update PHP version according to supported Moodle version
 # Currently Moodle 3.8 supported which supports PHP 7.4
 FROM php:7.4-apache AS prod
+USER root
 RUN mkdir -p /var/data/api
 RUN chmod a+rw /var/data/api
 RUN mkdir -p /var/data/api/stack/logs && mkdir mkdir -p /var/data/api/stack/tmp
