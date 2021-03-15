@@ -27,8 +27,8 @@ class qtype_stack_api_yaml {
         }
     }
 
-    public function __construct(string $yaml, $defaults) {
-        $question = yaml_parse($yaml);
+    public function __construct($yaml_or_json, $defaults) {
+        $question = is_string($yaml_or_json) ? yaml_parse($yaml_or_json) : $yaml_or_json;
         if ($question === false || !is_array($question)) {
             throw new Exception("Can't parse yaml.");
         }
