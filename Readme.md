@@ -70,33 +70,22 @@ This will
 * Build and start Stack API server in production mode on port 80 and makes it accessible via `localhost:49992`
 
 
-### Run development API server and Maxima
+## Debugging
 
-To run a development server, you can mount `entrypoint_install_and_run_debug.sh` to `entrypoint_install_and_run.sh`.  
-This will start an sshd server with the following options
+To debug stack, you can use the included Docker Compose file that sets up a local development environment.
 
-* Username: `root`
-* Password: `test`
-* Port: `22`
-
-```yaml
-version: "3.7"
-services:
-  maxima:
-    image: timimages/goemaxima:2020113000-latest
-  stack:
-    image: stack-api:build-dev
-    ports:
-      - "49992:80"
-      - "2020:22"
-    depends_on: 
-      - maxima
-    volumes:
-      - ./plots:/var/data/api/stack/plots:rw
-      - ./plots:/var/www/html/plots:rw
-      - ./api/config.php.docker:/var/www/html/config.php:rw
-      - ./entrypoint_install_and_run_debug.sh:/var/www/html/entrypoint_install_and_run.sh
-```
+1. Run `docker-compose -f docker-compose.debug.yml up`.
+   
+   This will build the latest image of stack API server and set up the following ports:
+    * `48882` for stack API
+    * `2222` for SSH (username `root`, password `test`)
+   
+   This wil also start the server in attached mode. Add `-d` flag to `docker-compose` to run in detached mode instead if you need to.
+2. Once the server starts, test that it works by going to `localhost:48882/api/endpoint.html`
+3. Set up xdebug remote debugging using IDE of your choice. 
+   
+   The image uses port `3009` for xdebug and has automatic breaking enabled for each request.
+   Edit `entrypoint_install_and_run_debug.sh` to edit breakpoint behaviour if needed.
 
 ## Syncing changes with upstream
 
