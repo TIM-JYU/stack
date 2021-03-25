@@ -9,7 +9,7 @@ services:
     depends_on:
       - maxima
     ports:
-      - "49992:80"
+      - "48882:80"
       - "2222:22"
     volumes:
       - ./plots:/var/data/api/stack/plots:rw
