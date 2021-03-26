@@ -6,6 +6,8 @@ services:
     build:
       context: .
       target: dev
+    extra_hosts:
+      - host.docker.internal:host-gateway
     depends_on:
       - maxima
     ports:
@@ -18,4 +20,4 @@ services:
       - ./stack:/var/www/html/stack:rw
       - ./blob:/var/www/html/api/blob:rw
       - ./api/config.php.docker:/var/www/html/config.php:rw
-      - ./entrypoint_install_and_run_debug.sh:/var/www/html/entrypoint_install_and_run.sh
+      - ./entrypoint_install_and_run_debug.sh:/var/www/html/entrypoint_install_and_run_debug.sh
