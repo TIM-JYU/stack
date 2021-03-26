@@ -1,2 +1,4 @@
 site/*
 .idea
+config.php
+phpinfo.php

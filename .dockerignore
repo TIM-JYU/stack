@@ -1,2 +1,4 @@
 plots/**/*
 plots
+./config.php
+./phpinfo.php
