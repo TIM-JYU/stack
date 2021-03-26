@@ -41,7 +41,7 @@ class qtype_stack_api_export {
     private function property(&$yaml, $propertyname, $value, $type, $section) {
         $value = self::processvalue($value, $type);
         $value = qtype_stack_api_input_values::get_yaml_value($propertyname, $value);
-        if (!$this->defaults->isdefault($section, $propertyname, $value)) {
+        if (!empty($value) && !$this->defaults->isdefault($section, $propertyname, $value)) {
             // For all string values, we try to tanslate them.
             if ($type == 'string') {
                 $multilang = new stack_multilang();
