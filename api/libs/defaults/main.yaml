@@ -26,7 +26,7 @@ input:
   forbid_words: "" ## good doc explanation required here
   allow_words: ""
   syntax_hint: "" # i.e {?,?,...} doc it
-  forbid_float: true
+  forbid_float: false
   require_lowest_terms: false
   check_answer_type: false
   must_verify: true
