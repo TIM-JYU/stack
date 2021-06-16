@@ -1038,7 +1038,7 @@ plot(ex, [ra]) :=  /*stack_web_plot*/
         error("Plot error: STACK does not currently support the following plot2d options: \\(",string(ralforbid),"\\)"),
     /********************************************/
     /* Create a unique identifier for the plot. */
-    tn: string(absolute_real_time()),
+    tn: string(round(absolute_real_time()*1000+elapsed_real_time()*1000)),
     filename:concat("stackplot","-",tn,"-",string(rand(10^8))),
     /* Sort out the name of the image file and its url. */
     afn: concat("'", IMAGE_DIR, filename, ".", PLOT_TERMINAL, "'"),

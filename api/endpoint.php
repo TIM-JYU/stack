@@ -17,7 +17,7 @@
 require_once(__DIR__ . '/../config.php');
 
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', $CFG->displayerrors);
 
 require_once(__DIR__ . '/libs/tools.php');
 require_once(__DIR__ . '/libs/export.php');
@@ -48,11 +48,12 @@ function processrequest() {
     $options->lang = $parsed['lang'];
     $options->debug = $parsed['debug'];
 
-    $questionyaml = trim($parsed['question']);
+    // Allow question be pure JSON
+    $questionyaml = is_string($parsed['question']) ? trim($parsed['question']) : $parsed['question'];
 
     $defaults = new qtype_stack_api_yaml_defaults($parsed['defaults']);
     // If question data starts with "<" sign - export it to yaml.
-    if ($questionyaml[0] === '<') {
+    if (is_string($questionyaml) && $questionyaml[0] === '<') {
         $export = new qtype_stack_api_export($questionyaml, $defaults);
         $questionyaml = $export->yaml();
     }

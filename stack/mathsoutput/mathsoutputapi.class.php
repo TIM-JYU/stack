@@ -34,6 +34,15 @@ class stack_maths_output_api extends stack_maths_output_filter_base {
         $this->inlineend = '\)';
     }
     protected function make_filter() {
-        return true;
+        return new minimal_filter();
+    }
+}
+
+/**
+ * Passthrough filter for the minimal API
+ */
+class minimal_filter {
+    public function filter($str) {
+        return $str;
     }
 }

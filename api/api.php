@@ -83,10 +83,28 @@ class qtype_stack_api {
         $qaid = null;
         foreach ($question->inputs as $name => $input) {
             // Get the actual value of the teacher's answer at this point.
+
+            // Get hidden input for computing score (emulate base STACK behaviour)
+            // Some inputs require validation (like `algebraic`). For those, _val input names are used instead.
+            // This is a minor fix that automatically includes the _val input value if the input type requires
+            // validation.
+            // Check inputbase.class.php:622 for example of how _val is used in validatable fields
+            if (property_exists($options, 'validate') && !$options->validate) {
+                $state = $question->get_input_state($name, $attempt);
+
+                $skipvalidation = stack_input::BLANK == $state->status ||
+                    stack_input::INVALID == $state->status;
+
+                if (!$skipvalidation && $input->requires_validation() && '' !== $state->contents) {
+                    // This line ensures we move straight to the score status.
+                    $attempt[$name.'_val'] = $input->contents_to_maxima($state->contents);
+                }
+            }
+
             $tavalue = $question->get_ta_for_input($name);
 
             $fieldname = $fieldprefix.$name;
-            $state = $question->get_input_state($name, $response);
+            $state = $question->get_input_state($name, $attempt);
 
             $questiontext = str_replace("[[input:{$name}]]",
             $input->render($state, $fieldname, $options->readonly, $tavalue),

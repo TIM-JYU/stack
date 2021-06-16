@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  maxima:
+    image: timimages/goemaxima:2020113001-latest
+  stack:
+    build:
+      context: .
+      target: dev
+    depends_on:
+      - maxima
+    ports:
+      - "48882:80"
+      - "2222:22"
+    volumes:
+      - ./:/var/www/html:rw
+      - ./plots:/var/data/api/stack/plots:rw
+      - ./blob:/var/www/html/api/blob:rw
+      - ./api/config.php.docker:/var/www/html/config.php:rw

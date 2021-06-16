@@ -27,8 +27,8 @@ class qtype_stack_api_yaml {
         }
     }
 
-    public function __construct(string $yaml, $defaults) {
-        $question = yaml_parse($yaml);
+    public function __construct($yaml_or_json, $defaults) {
+        $question = is_string($yaml_or_json) ? yaml_parse($yaml_or_json) : $yaml_or_json;
         if ($question === false || !is_array($question)) {
             throw new Exception("Can't parse yaml.");
         }
@@ -78,11 +78,12 @@ class qtype_stack_api_yaml {
         // First consolidate langauges.
         // Note, we don't delete the language versions from the question array.
         foreach ($castextfields as $field) {
-            $fieldhtml = $field . '_html_';
+            $fieldhtml = $field . '_html';
+            $fieldhtml_langpostfix = $fieldhtml . '_';
             foreach ($question as $key => $value) {
                 // Note the 0 is not false here.
-                if (stripos($key, $fieldhtml) === 0) {
-                    $langfound = str_replace($fieldhtml, '', $key);
+                if (stripos($key, $fieldhtml_langpostfix) === 0) {
+                    $langfound = str_replace($fieldhtml_langpostfix, '', $key);
                     if ($lang == '') {
                         // We are not looking for a specific language, so consolidate them all.
                         $langwrap = '<span lang="' . $langfound .'" class="multilang">' . $value . "</span>\n";

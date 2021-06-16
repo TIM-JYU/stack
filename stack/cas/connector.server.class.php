@@ -16,6 +16,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+global $PLOT_MIMES;
+$PLOT_MIMES = array(
+    'png' => 'image/png',
+    'svg' => 'image/svg+xml'
+);
+
 /**
  * Connection to Maxima running in a tomcat-server using the MaximaPool-servlet.
  * This version handles transfer of the plots generated on possibly remote servlet.
@@ -33,6 +39,7 @@ class stack_cas_connection_server extends stack_cas_connection_base {
     }
 
     protected function call_maxima($command) {
+        global $PLOT_MIMES;
         global $CFG;
         $err = '';
 
@@ -66,6 +73,8 @@ class stack_cas_connection_server extends stack_cas_connection_base {
             }
         }
 
+        $plots = array();
+
         // Did we get files?
         if (strpos(curl_getinfo($request, CURLINFO_CONTENT_TYPE), "text/plain") === false) {
             // We have to save the zip file on local disk before opening...
@@ -86,15 +95,18 @@ class stack_cas_connection_server extends stack_cas_connection_base {
                     $ret = zip_entry_read($entry, zip_entry_filesize($entry));
                     zip_entry_close($entry);
                 } else {
-                    $filename = $CFG->dataroot . "/stack/plots/" . zip_entry_name($entry);
+                    $entry_name = zip_entry_name($entry);
+                    //$filename = $CFG->dataroot . "/stack/plots/" . zip_entry_name($entry);
                     zip_entry_open($zip, $entry);
-                    $fp = fopen($filename, 'w');
+                    //$fp = fopen($filename, 'w');
+                    $data = "";
                     $buffy = zip_entry_read($entry, 2048);
                     while ($buffy != '') {
-                        fwrite($fp, $buffy);
+                        $data = $data . $buffy;
                         $buffy = zip_entry_read($entry, 2048);
                     }
-                    fclose($fp);
+                    $fname = pathinfo($entry_name, PATHINFO_BASENAME);
+                    $plots[$fname] = base64_encode($data);
                     zip_entry_close($entry);
                 }
 
@@ -103,6 +115,16 @@ class stack_cas_connection_server extends stack_cas_connection_base {
             zip_close($zip);
             // Clean up.
             unlink($ziptemp);
+        }
+
+        if (!empty($plots)) {
+            foreach ($plots as $name => $data) {
+                $ext = pathinfo($name, PATHINFO_EXTENSION);
+                $mime = $PLOT_MIMES[$ext];
+                $plot_url = '!ploturl!'.$name;
+                $img_data = 'data:'.$mime.';base64,'.$data;
+                $ret = str_replace($plot_url, $img_data, $ret);
+            }
         }
 
         curl_close($request);
